@@ -1,0 +1,33 @@
+name: "Moon Estate - Plan"
+on:
+  push:
+    branches:
+      - 'tf/tsukiyashiki/**'
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_GITHUB_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+
+      - uses: opentofu/setup-opentofu@v1
+
+      - name: OpenTofu Init
+        run: |
+          tofu init \
+            -backend-config="bucket=${{ vars.S3_BACKEND_NAME }}" \
+            -backend-config="key=foundation/terraform.tfstate" \
+            -backend-config="region=${{ vars.AWS_DEFAULT_REGION }}" \
+            -backend-config="encrypt=true"
+
+      - name: OpenTofu Plan
+        run: tofu plan -no-color
