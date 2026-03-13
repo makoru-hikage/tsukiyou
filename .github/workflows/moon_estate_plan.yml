@@ -1,0 +1,63 @@
+name: "Moon Estate - Plan"
+on:
+  push:
+    branches:
+      - 'tf/tsukiyashiki/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: opentofu/setup-opentofu@v1
+
+      - name: OpenTofu Init (Backendless)
+        run: tofu init -backend=false
+      - name: OpenTofu Validate
+        run: tofu validate
+  
+  plan:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_GITHUB_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+
+      - name: Load Secrets and Vars into Tofu
+        run: |
+          # Transform all Vars into TF_VAR_ lowercase
+          echo '${{ toJSON(vars) }}' | jq -r 'to_entries[] | "TF_VAR_\(.key | ascii_downcase)=\(.value)"' >> $GITHUB_ENV
+          # Transform all Secrets into TF_VAR_ lowercase
+          echo '${{ toJSON(secrets) }}' | jq -r 'to_entries[] | "TF_VAR_\(.key | ascii_downcase)=\(.value)"' >> $GITHUB_ENV
+      
+      - name: TF_VAR Guard
+        run: |
+          echo "Verifying all TF_VARs are populated..."
+          # Scan environment for TF_VARs with empty values
+          EMPTY_VARS=$(env | grep '^TF_VAR_' | awk -F= '$2=="" {print $1}')
+          
+          if [ ! -z "$EMPTY_VARS" ]; then
+            echo "ERROR: The following variables are empty in the environment:"
+            echo "$EMPTY_VARS"
+            echo "Please check your GitHub Secrets and Variables."
+            exit 1
+          fi
+          echo "All TF_VARs validated."
+
+      - name: OpenTofu Init
+        run: |
+          tofu init \
+            -backend-config="bucket=${{ vars.S3_BACKEND_NAME }}" \
+            -backend-config="key=foundation/terraform.tfstate" \
+            -backend-config="region=${{ vars.AWS_DEFAULT_REGION }}" \
+            -backend-config="encrypt=true"
+
+      - name: OpenTofu Plan
+        run: tofu plan -no-color
