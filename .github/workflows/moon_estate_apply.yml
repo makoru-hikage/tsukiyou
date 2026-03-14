@@ -45,7 +45,7 @@ jobs:
 
       - name: OpenTofu Init
         run: |
-          tofu init \
+          tofu init -reconfigure \
             -backend-config="bucket=${{ vars.BACKEND_BUCKET }}" \
             -backend-config="key=foundation/terraform.tfstate" \
             -backend-config="region=${{ vars.AWS_REGION }}" \
