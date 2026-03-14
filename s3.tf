@@ -16,33 +16,33 @@ resource "aws_s3_bucket_public_access_block" "moon_estate_bedrock_vault_acl" {
   restrict_public_buckets = true
 }
 
-# # The Gating Policy (Restricts access ONLY to the VPC Endpoint)
-# resource "aws_s3_bucket_policy" "moon_estate_bedrock_vault_policy" {
-#   bucket = aws_s3_bucket.moon_estate_bedrock_vault.id
-#   policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Sid       = "AccessFromMoonEstateOnly"
-#         Effect    = "Deny"
-#         Principal = "*"
-#         Action    = "s3:*"
-#         Resource = [
-#           aws_s3_bucket.moon_estate_bedrock_vault.arn,
-#           "${aws_s3_bucket.moon_estate_bedrock_vault.arn}/*"
-#         ]
-#         Condition = {
-#           StringNotEquals = {
-#             "aws:sourceVpce" = aws_vpc_endpoint.s3_vault_gate.id
-#           }
-#           ArnNotLike = {
-#             "aws:PrincipalArn" = [
-#               var.github_oidc_role_arn,
-#               "${var.github_oidc_role_arn}/*"
-#             ]
-#           }
-#         }
-#       }
-#     ]
-#   })
-# }
+# The Gating Policy (Restricts access ONLY to the VPC Endpoint)
+resource "aws_s3_bucket_policy" "moon_estate_bedrock_vault_policy" {
+  bucket = aws_s3_bucket.moon_estate_bedrock_vault.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "AccessFromMoonEstateOnly"
+        Effect    = "Deny"
+        Principal = "*"
+        Action    = "s3:*"
+        Resource = [
+          aws_s3_bucket.moon_estate_bedrock_vault.arn,
+          "${aws_s3_bucket.moon_estate_bedrock_vault.arn}/*"
+        ]
+        Condition = {
+          StringNotEquals = {
+            "aws:sourceVpce" = aws_vpc_endpoint.s3_vault_gate.id
+          }
+          ArnNotLike = {
+            "aws:PrincipalArn" = [
+              var.github_oidc_role_arn,
+              "${var.github_oidc_role_arn}/*"
+            ]
+          }
+        }
+      }
+    ]
+  })
+}
