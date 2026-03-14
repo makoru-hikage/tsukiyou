@@ -1,8 +1,9 @@
 name: "Moon Estate - Plan"
 on:
-  push:
+  pull_request:
     branches:
       - 'tf/tsukiyashiki/**'
+    types: [opened, synchronize, reopened]
 
 jobs:
   validate:
