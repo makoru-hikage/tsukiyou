@@ -35,6 +35,11 @@ resource "aws_s3_bucket_policy" "moon_estate_bedrock_vault_policy" {
           StringNotEquals = {
             "aws:sourceVpce" = aws_vpc_endpoint.s3_vault_gate.id
           }
+          ArnNotLike = {
+            "aws:PrincipalArn" = [
+              var.github_oidc_role_arn
+            ]
+          }
         }
       }
     ]
