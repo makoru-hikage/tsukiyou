@@ -17,13 +17,15 @@ jobs:
         run: tofu validate
   
   plan:
+    needs: validate
     environment: personal
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - name: Branch Checkout
+        uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -51,6 +53,9 @@ jobs:
             exit 1
           fi
           echo "All TF_VARs validated."
+
+      - name: Install OpenTofu
+        uses: opentofu/setup-opentofu@v1
 
       - name: OpenTofu Init
         run: |
