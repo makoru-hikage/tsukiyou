@@ -45,7 +45,9 @@ resource "aws_iam_role_policy" "tsukiyou_vault_access" {
         Effect = "Allow"
         Action = [
           "kms:Decrypt",
-          "kms:GenerateDataKey*"
+          "kms:DescribeKey",
+          "kms:GenerateDataKey*",
+          "kms:ReEncrypt*"
         ]
         Resource = [aws_kms_key.moon_estate_bedrock_vault_key.arn]
       }
