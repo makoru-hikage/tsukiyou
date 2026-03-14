@@ -1,6 +1,22 @@
 resource "aws_iam_role" "tsukiyou_identity" {
   name = "tsukiyou-no-kenzoku"
-  assume_role_policy = jsonencode({})
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = "sts:AssumeRole"
+        Principal = {
+          Service = "bedrock.amazonaws.com"
+        }
+        Condition = {
+          StringEquals = {
+            "aws:SourceAccount" = var.aws_account_id
+          }
+        }
+      }
+    ]
+  })
 }
 
 import {

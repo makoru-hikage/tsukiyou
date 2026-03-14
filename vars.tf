@@ -12,3 +12,7 @@ variable "github_oidc_role_arn" {
   type = string
   description = "The official Github contractor"
 }
+
+variable "aws_account_id" {
+  type = string
+}
