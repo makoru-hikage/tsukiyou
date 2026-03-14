@@ -37,7 +37,8 @@ resource "aws_s3_bucket_policy" "moon_estate_bedrock_vault_policy" {
           }
           ArnNotLike = {
             "aws:PrincipalArn" = [
-              var.github_oidc_role_arn
+              var.github_oidc_role_arn,
+              "${var.github_oidc_role_arn}/*"
             ]
           }
         }
