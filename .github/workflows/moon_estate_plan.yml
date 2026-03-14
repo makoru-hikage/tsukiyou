@@ -60,7 +60,7 @@ jobs:
       - name: OpenTofu Init
         run: |
           tofu init \
-            -backend-config="bucket=${{ vars.S3_BACKEND_NAME }}" \
+            -backend-config="bucket=${{ secrets.S3_BACKEND_NAME }}" \
             -backend-config="key=foundation/terraform.tfstate" \
             -backend-config="region=${{ vars.AWS_DEFAULT_REGION }}" \
             -backend-config="encrypt=true"
