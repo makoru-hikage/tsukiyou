@@ -65,5 +65,8 @@ jobs:
             -backend-config="region=${{ vars.AWS_DEFAULT_REGION }}" \
             -backend-config="encrypt=true"
 
+      - name: Where is the state?
+        run: grep "backend" .terraform/terraform.tfstate || echo "No remote backend found!"
+
       - name: OpenTofu Plan
         run: tofu plan -no-color
