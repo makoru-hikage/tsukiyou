@@ -13,6 +13,7 @@ jobs:
       contents: read
     env:
       TF_VAR_bedrock_vault_s3: ${{ secrets.TF_VAR_BEDROCK_VAULT_S3 }}
+      TF_VAR_estate_maintainer_arn: ${{ secrets.TF_VAR_ESTATE_MAINTAINER_ARN }}
 
     steps:
       - name: Checkout
