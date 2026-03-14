@@ -12,7 +12,7 @@ assume_role_policy = jsonencode({
       },
       "Condition"= {
         "StringEquals"= {
-          "aws:SourceAccount"= "$${data.aws_caller_identity.current.account_id}"
+          "aws:SourceAccount"= "$\u007bdata.aws_caller_identity.current.account_id}"
         }
       }
     }
