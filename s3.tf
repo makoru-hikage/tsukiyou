@@ -2,13 +2,13 @@
 resource "aws_s3_bucket" "moon_estate_bedrock_vault" {
   bucket = var.bedrock_vault_s3
   tags = {
-    Name        = "tsukiyou-no-omokage"
+    Name        = var.bedrock_vault_s3
   }
 }
 
 # The Seal (Public Access Block)
 resource "aws_s3_bucket_public_access_block" "moon_estate_bedrock_vault_acl" {
-  bucket = aws_s3_bucket.omokage.id
+  bucket = aws_s3_bucket.moon_estate_bedrock_vault.id
 
   block_public_acls       = true
   block_public_policy     = true
