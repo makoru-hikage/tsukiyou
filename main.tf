@@ -14,7 +14,7 @@ terraform {
     bucket = "perhaps"
     key = "perhaps"
     region = "ap-northeast-2"
-    dynamodb = "perhaps"
+    dynamodb = "tsukiyou-state-lock"
   }
 }
 
