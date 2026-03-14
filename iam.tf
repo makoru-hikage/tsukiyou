@@ -21,7 +21,6 @@ assume_role_policy = <<EOF
 }
 EOF
 }
-}
 
 resource "aws_iam_role_policy" "tsukiyou_vault_access" {
   name = "TsukiyouVaultAccess"
