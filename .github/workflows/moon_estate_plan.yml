@@ -24,6 +24,9 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    env:
+      TF_VAR_bedrock_vault_s3: ${{ secrets.TF_VAR_BEDROCK_VAULT_S3 }}
+ 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,13 +38,6 @@ jobs:
           aws-region: ${{ vars.AWS_DEFAULT_REGION }}
           role-session-name: "tsukiyou-session-plan"
 
-      - name: Load Secrets and Vars into Tofu
-        run: |
-          # Transform all Vars into TF_VAR_ lowercase
-          echo '${{ toJSON(vars) }}' | jq -r 'to_entries[] | "TF_VAR_\(.key | ascii_downcase)=\(.value)"' >> $GITHUB_ENV
-          # Transform all Secrets into TF_VAR_ lowercase
-          echo '${{ toJSON(secrets) }}' | jq -r 'to_entries[] | "TF_VAR_\(.key | ascii_downcase)=\(.value)"' >> $GITHUB_ENV
-      
       - name: TF_VAR Guard
         run: |
           echo "Verifying all TF_VARs are populated..."
