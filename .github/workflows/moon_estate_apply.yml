@@ -12,13 +12,15 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_GITHUB_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+          role-session-name: "tsukiyou-session-apply"
 
       - name: Load Secrets and Vars into Tofu
         run: |
@@ -41,14 +43,14 @@ jobs:
           fi
           echo "All TF_VARs validated."
 
-      - uses: opentofu/setup-opentofu@v1
+      - name: Install OpenTofu
+        uses: opentofu/setup-opentofu@v1
 
       - name: OpenTofu Init
         run: |
           tofu init -reconfigure \
-            -backend-config="bucket=${{ vars.BACKEND_BUCKET }}" \
+            -backend-config="bucket=${{ secrets.S3_BACKEND_NAME }}" \
             -backend-config="key=foundation/terraform.tfstate" \
-            -backend-config="region=${{ vars.AWS_REGION }}" \
             -backend-config="encrypt=true"
 
       - name: Generate Salted Plan Name
