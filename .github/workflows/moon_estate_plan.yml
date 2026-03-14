@@ -2,7 +2,7 @@ name: "Moon Estate - Plan"
 on:
   pull_request:
     branches:
-      - 'tf/tsukiyashiki/**'
+      - 'main'
     types: [opened, synchronize, reopened]
 
 jobs:
