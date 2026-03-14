@@ -20,7 +20,8 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_GITHUB_ROLE_ARN }}
           aws-region: ${{ vars.AWS_DEFAULT_REGION }}
-          
+          role-session-name: "tsukiyou-session-apply"
+
       - name: Load Secrets and Vars into Tofu
         run: |
           # Transform all Vars into TF_VAR_ lowercase
