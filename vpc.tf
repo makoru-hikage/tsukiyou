@@ -75,3 +75,63 @@ resource "aws_internet_gateway" "main_gate" {
   vpc_id = aws_vpc.moon_estate.id
   tags   = { Name = "moon-estate-igw" }
 }
+
+
+# 2. Public Route Table (For the Outer Court)
+resource "aws_route_table" "moon_estate_public_rtb" {
+  vpc_id = aws_vpc.moon_estate.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main_gate.id
+  }
+
+  tags = { Name = "moon-estate-public-rtb" }
+}
+
+# 3. Public Associations (For Subnets A and C)
+resource "aws_route_table_association" "moon_estate_public_a_rtba" {
+  subnet_id      = aws_subnet.moon_estate_public_a.id
+  route_table_id = aws_route_table.moon_estate_public_rtb.id
+}
+
+resource "aws_route_table_association" "moon_estate_public_c_rtba" {
+  subnet_id      = aws_subnet.moon_estate_public_c.id
+  route_table_id = aws_route_table.moon_estate_public_rtb.id
+}
+
+# 4. Private Route Table (The Inner Sanctuary - No IGW path)
+resource "aws_route_table" "moon_estate_private_rtb" {
+  vpc_id = aws_vpc.moon_estate.id
+  tags   = { Name = "moon-estate-private-rtb" }
+}
+
+# 5. Private Associations (Where Tsukiyou will reside)
+resource "aws_route_table_association" "moon_estate_private_a_rtba" {
+  subnet_id      = aws_subnet.moon_estate_private_a.id
+  route_table_id = aws_route_table.moon_estate_private_rtb.id
+}
+
+resource "aws_route_table_association" "moon_estate_private_b_rtba" {
+  subnet_id      = aws_subnet.moon_estate_private_b.id
+  route_table_id = aws_route_table.moon_estate_private_rtb.id
+}
+
+resource "aws_route_table_association" "moon_estate_private_c_rtba" {
+  subnet_id      = aws_subnet.moon_estate_private_c.id
+  route_table_id = aws_route_table.moon_estate_private_rtb.id
+}
+
+# The Secret Gate to the Archive (S3 Gateway Endpoint)
+resource "aws_vpc_endpoint" "s3_vault_gate" {
+  vpc_id            = aws_vpc.moon_estate.id
+  service_name      = "com.amazonaws.ap-northeast-2.s3"
+  vpc_endpoint_type = "Gateway"
+
+  # This is the "Magic" - it injects the S3 route into the Sanctuary
+  route_table_ids = [aws_route_table.moon_estate_private_rtb.id]
+
+  tags = {
+    Name = "moon-estate-vault-gate"
+  }
+}
