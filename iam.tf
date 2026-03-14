@@ -1,5 +1,6 @@
 resource "aws_iam_role" "tsukiyou_identity" {
   name = "tsukiyou-no-kenzoku"
+  assume_role_policy = jsonencode({})
 }
 
 import {
