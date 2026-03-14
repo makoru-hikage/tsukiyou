@@ -12,6 +12,7 @@ resource "aws_iam_role" "tsukiyou_identity" {
         }
         Condition = {
           StringEquals = {
+            # Interpolation happens inside the string value
             "aws:SourceAccount" = "${data.aws_caller_identity.current.account_id}"
           }
         }
