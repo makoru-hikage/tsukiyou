@@ -1,23 +1,10 @@
 resource "aws_iam_role" "tsukiyou_identity" {
   name = "tsukiyou-no-kenzoku"
+}
 
-assume_role_policy = jsonencode({
-  "Version" = "2012-10-17",
-  "Statement" = [
-    {
-      "Action" = "sts:AssumeRole",
-      "Effect"=  "Allow",
-      "Principal" = {
-        "Service"=  "bedrock.amazonaws.com"
-      },
-      "Condition"= {
-        "StringEquals"= {
-          "aws:SourceAccount"= "$\u007bdata.aws_caller_identity.current.account_id}"
-        }
-      }
-    }
-  ]
-})
+import {
+  to = aws_iam_role.tsukiyou_identity
+  id = "tsukiyou-no-kenzoku"
 }
 
 resource "aws_iam_role_policy" "tsukiyou_vault_access" {
