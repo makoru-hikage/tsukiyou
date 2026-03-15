@@ -25,6 +25,9 @@ jobs:
   summon:
     environment: personal
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     env:
       TF_VAR_spirit_gate_open: ${{ github.event.inputs.action == 'open' }}
       TF_VAR_spirit_gate_subnet: ${{ github.event.inputs.subnet }}
