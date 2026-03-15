@@ -25,8 +25,13 @@ variable "spirit_gate_subnet" {
 }
 
 variable "spirit_gate_open" {
-  type        = bool
-  description = "Toggle to manifest the Bedrock Interface Endpoint."
-  default     = false # Now safe to keep!
+  type        = string
+  description = "Will the gate open? 'true' or 'false' only"
+  default     = "false"
+  
+  validation {
+    condition     = contains(["true", "false"], var.spirit_gate_open)
+    error_message = "The spirit_gate_open variable must be exactly 'true' or 'false'."
+  }
 }
 
