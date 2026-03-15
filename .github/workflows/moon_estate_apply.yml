@@ -70,7 +70,10 @@ jobs:
           fi
           
       - name: OpenTofu Plan
-        run: tofu plan -out=${{ steps.name_salt.outputs.PLAN_NAME }}.tfplan
+        run: >
+          tofu plan
+          -var="spirit_gate_open=${{ steps.check_gate.outputs.exists }}"
+          -out=${{ steps.name_salt.outputs.PLAN_NAME }}.tfplan
 
       - name: OpenTofu Apply
-        run: tofu apply -auto-approve ${{ steps.name_salt.outputs.PLAN_NAME }}.tfplan -var="spirit_gate_open=${{ steps.check_gate.outputs.exists }}" 
+        run: tofu apply -auto-approve ${{ steps.name_salt.outputs.PLAN_NAME }}.tfplan 
