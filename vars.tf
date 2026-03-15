@@ -23,3 +23,9 @@ variable "spirit_gate_subnet" {
   description = "Used to summon an ephemeral interface gateway."
 }
 
+variable "spirit_gate_open" {
+  type        = bool
+  description = "Toggle to manifest the Bedrock Interface Endpoint."
+  default     = false # Now safe to keep!
+}
+
