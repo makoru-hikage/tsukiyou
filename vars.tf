@@ -16,3 +16,17 @@ variable "github_oidc_role_arn" {
 variable "aws_account_id" {
   type = string
 }
+
+# Only used by a summon workflow when a particular VPC interface gateway is opened
+variable "spirit_gate_subnet" {
+  type = string
+  description = "Used to summon an ephemeral interface gateway."
+  default = "private_a"
+}
+
+variable "spirit_gate_open" {
+  type        = bool
+  description = "Toggle to manifest the Bedrock Interface Endpoint."
+  default     = false # Now safe to keep!
+}
+
