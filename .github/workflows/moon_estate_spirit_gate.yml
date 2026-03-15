@@ -1,0 +1,81 @@
+name: "Summon Spirit Gate"
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Open or Close the Gate?"
+        required: true
+        default: "open"
+        type: choice
+        options:
+          - open
+          - close
+      subnet:
+        description: "Which subnet should the Gate manifest in?"
+        required: true
+        default: "private_a"
+        type: choice
+        options:
+          - private_a
+          - private_b
+          - private_c
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    env:
+      TF_VAR_spirit_gate_open: ${{ github.event.inputs.action == 'open' }}
+      TF_VAR_spirit_gate_subnet: ${{ github.event.inputs.subnet }}
+      TF_VAR_bedrock_vault_s3: ${{ secrets.TF_VAR_BEDROCK_VAULT_S3 }}
+      TF_VAR_aws_account_id: ${{ secrets.TF_VAR_AWS_ACCOUNT_ID }}
+      TF_VAR_estate_maintainer_arn: ${{ secrets.TF_VAR_ESTATE_MAINTAINER_ARN }}
+      TF_VAR_github_oidc_role_arn: ${{ secrets.TF_VAR_GITHUB_OIDC_ROLE_ARN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_GITHUB_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+          role-session-name: "tsukiyou-session-apply"
+
+      - name: TF_VAR Guard
+        run: |
+          echo "Verifying all TF_VARs are populated..."
+          # Scan environment for TF_VARs with empty values
+          EMPTY_VARS=$(env | grep '^TF_VAR_' | awk -F= '$2=="" {print $1}')
+          
+          if [ ! -z "$EMPTY_VARS" ]; then
+            echo "ERROR: The following variables are empty in the environment:"
+            echo "$EMPTY_VARS"
+            echo "Please check your GitHub Secrets and Variables."
+            exit 1
+          fi
+          echo "All TF_VARs validated."
+
+      - name: Install OpenTofu
+        uses: opentofu/setup-opentofu@v1
+
+      - name: OpenTofu Init
+        run: |
+          tofu init -reconfigure \
+            -backend-config="bucket=${{ secrets.S3_BACKEND_NAME }}" \
+            -backend-config="key=foundation/terraform.tfstate" \
+            -backend-config="encrypt=true"
+
+      - name: Generate Salted Plan Name
+        id: name_salt
+        run: |
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          SALT=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c4)
+          echo "PLAN_NAME=${SHORT_SHA}-${SALT}" >> $GITHUB_OUTPUT
+
+      - name: OpenTofu Plan
+        run: tofu plan -out=${{ steps.name_salt.outputs.PLAN_NAME }}.tfplan
+
+      - name: OpenTofu Apply
+        run: tofu apply -auto-approve ${{ steps.name_salt.outputs.PLAN_NAME }}.tfplan
