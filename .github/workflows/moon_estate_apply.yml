@@ -59,8 +59,18 @@ jobs:
           SALT=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c4)
           echo "PLAN_NAME=${SHORT_SHA}-${SALT}" >> $GITHUB_OUTPUT
 
+      - name: Check if the Spirit Gate is currently Open
+        id: check_gate
+        run: |
+          # Use 'tofu output' or 'state list' to see if the endpoint exists
+          if tofu state list | grep -q "aws_vpc_endpoint.spirit_gate"; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+          
       - name: OpenTofu Plan
         run: tofu plan -out=${{ steps.name_salt.outputs.PLAN_NAME }}.tfplan
 
       - name: OpenTofu Apply
-        run: tofu apply -auto-approve ${{ steps.name_salt.outputs.PLAN_NAME }}.tfplan
+        run: tofu apply -auto-approve ${{ steps.name_salt.outputs.PLAN_NAME }}.tfplan -var="spirit_gate_open=${{ steps.check_gate.outputs.exists }}" 
