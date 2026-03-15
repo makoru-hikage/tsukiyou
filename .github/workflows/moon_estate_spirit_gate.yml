@@ -82,7 +82,7 @@ jobs:
         run: >
           tofu plan 
           -out=${{ steps.name_salt.outputs.PLAN_NAME }}.tfplan
-          -var="spirit_gate_open=${{ steps.check_gate.outputs.exists }}"
+          -var="spirit_gate_open=${{ github.event.inputs.action == 'open' && 'true' || 'false' }}"
 
       - name: OpenTofu Apply
         run: tofu apply -auto-approve ${{ steps.name_salt.outputs.PLAN_NAME }}.tfplan 
