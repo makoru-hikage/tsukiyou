@@ -22,7 +22,8 @@ on:
           - private_c
 
 jobs:
-  terraform:
+  summon:
+    environment: personal
     runs-on: ubuntu-latest
     env:
       TF_VAR_spirit_gate_open: ${{ github.event.inputs.action == 'open' }}
