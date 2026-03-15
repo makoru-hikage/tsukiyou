@@ -21,6 +21,7 @@ variable "aws_account_id" {
 variable "spirit_gate_subnet" {
   type = string
   description = "Used to summon an ephemeral interface gateway."
+  default = "private_a"
 }
 
 variable "spirit_gate_open" {
