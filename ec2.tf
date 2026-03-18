@@ -23,5 +23,12 @@ resource "aws_instance" "moon_estate_nat_bridge" {
               service iptables save
               EOF
 
+  root_block_device {
+    volume_type           = "gp3"
+    volume_size           = 8
+    encrypted             = true
+    # kms_key_id            = "AWS-MANAGED-KEY"
+    delete_on_termination = true
+  }
   tags = { Name = "tsukigumo-seireimon" }
 }
