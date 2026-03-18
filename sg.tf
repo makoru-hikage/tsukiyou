@@ -28,7 +28,7 @@ resource "aws_security_group_rule" "gate_egress_all" {
 
 resource "aws_security_group" "moon_estate_cloud_gate_sg" {
   name        = "tsukigumo-seireimon"
-  description = "The NAT Instance's Security Group"
+  description = "The NAT Instance Security Group"
   vpc_id      = aws_vpc.moon_estate.id
 
   tags = {
