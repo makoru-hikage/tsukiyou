@@ -2,7 +2,8 @@ resource "aws_instance" "moon_estate_nat_bridge" {
   ami           = "ami-0327840715a6510bf" # AL2023 ARM64 in ap-northeast-2
   instance_type = "t4g.nano"
   subnet_id     = aws_subnet.moon_estate_public_a.id
-  
+  iam_instance_profile = aws_iam_instance_profile.moon_estate_cloud_gate_role_profile.name
+
   # CRITICAL: NAT instances must not check if they are the final destination
   source_dest_check = false 
   
@@ -22,5 +23,12 @@ resource "aws_instance" "moon_estate_nat_bridge" {
               service iptables save
               EOF
 
+  root_block_device {
+    volume_type           = "gp3"
+    volume_size           = 8
+    encrypted             = true
+    # kms_key_id            = "AWS-MANAGED-KEY"
+    delete_on_termination = true
+  }
   tags = { Name = "tsukigumo-seireimon" }
 }
