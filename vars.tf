@@ -17,6 +17,12 @@ variable "aws_account_id" {
   type = string
 }
 
+variable "the_developer_email" {
+  type = string
+  description = "Hi!"
+  default = "kurt_ma.coll@live.com"
+}
+
 # Only used by a summon workflow when a particular VPC interface gateway is opened
 variable "spirit_gate_subnet" {
   type = string
