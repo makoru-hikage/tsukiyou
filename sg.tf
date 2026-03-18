@@ -42,7 +42,7 @@ resource "aws_security_group_rule" "moon_estate_cloud_gate_sg_i_all" {
   to_port     = 0
   protocol    = "-1"
   cidr_blocks = [aws_vpc.moon_estate.cidr_block]
-  security_group_id = aws_security_group.tsukigumo_seireimon_sg.id
+  security_group_id = aws_security_group.moon_estate_cloud_gate_sg.id
 }
 
 resource "aws_security_group_rule" "moon_estate_cloud_gate_sg_e_all" {
@@ -51,6 +51,6 @@ resource "aws_security_group_rule" "moon_estate_cloud_gate_sg_e_all" {
   to_port     = 0
   protocol    = "-1"
   cidr_blocks = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.tsukigumo_seireimon_sg.id
+  security_group_id = aws_security_group.moon_estate_cloud_gate_sg.id
 }
 
