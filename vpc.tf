@@ -122,6 +122,12 @@ resource "aws_route_table_association" "moon_estate_private_c_rtba" {
   route_table_id = aws_route_table.moon_estate_private_rtb.id
 }
 
+resource "aws_route" "moon_estate_cloud_gate_nat_route" {
+  route_table_id = aws_route_table.moon_estate_private_rtb.id
+  destination_cidr_block = "0.0.0.0/0"
+  network_interface_id = aws_instance.moon_estate_nat_bridge.primary_network_interface_id
+}
+
 # The Secret Gate to the Archive (S3 Gateway Endpoint)
 resource "aws_vpc_endpoint" "s3_vault_gate" {
   vpc_id            = aws_vpc.moon_estate.id
