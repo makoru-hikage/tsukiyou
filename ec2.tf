@@ -41,11 +41,10 @@ resource "aws_instance" "moon_estate_nat_bridge" {
   tags = { Name = "tsukigumo-seireimon" }
 }
 
-# 1. The Anchor (The Reservation)
 resource "aws_ec2_capacity_reservation" "nat_anchor" {
   instance_type           = "t4g.nano"
   instance_platform       = "Linux/UNIX"
-  availability_zone       = aws_subnet.moon_estate_public_a.availability_zone_id
+  availability_zone       = aws_subnet.moon_estate_public_a.availability_zone
   instance_count          = 1
   instance_match_criteria = "targeted"
 
