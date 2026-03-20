@@ -30,5 +30,26 @@ resource "aws_instance" "moon_estate_nat_bridge" {
     # kms_key_id            = "AWS-MANAGED-KEY"
     delete_on_termination = true
   }
+
+
+  capacity_reservation_specification {
+    capacity_reservation_target {
+      capacity_reservation_id = aws_ec2_capacity_reservation.nat_anchor.id
+    }
+  }
+
   tags = { Name = "tsukigumo-seireimon" }
 }
+
+resource "aws_ec2_capacity_reservation" "nat_anchor" {
+  instance_type           = "t4g.nano"
+  instance_platform       = "Linux/UNIX"
+  availability_zone       = aws_subnet.moon_estate_public_a.availability_zone
+  instance_count          = 1
+  instance_match_criteria = "targeted"
+
+  tags = {
+    Name = "tsukiyashiki-nat-anchor"
+  }
+}
+
