@@ -76,6 +76,15 @@ resource "aws_vpc_security_group_egress_rule" "tsukigumo_access_e_internet" {
   description       = "Egress for Ollama and updates"
 }
 
+resource "aws_vpc_security_group_ingress_rule" "tsukigumo_access_i_mitome_in" {
+  security_group_id = aws_security_group.tsukigumo_access.id
+  referenced_security_group_id = aws_security_group.tsukigumo_access_plug_sg.id
+  ip_protocol = "-1"
+  from_port = 0
+  to_port = 65535
+  description = "Just adjust the rules in the plugged SG"
+}
+
 resource "aws_security_group" "tsukigumo_ssh_endpoint_sg" {
   name        = "tsukigumo-ssh-endpoint-sg"
   description = "Security Group for the Interface Endpoint"
@@ -89,4 +98,10 @@ resource "aws_vpc_security_group_egress_rule" "tsukigumo_ssh_endpoint_sg_e" {
   to_port                      = 22
   ip_protocol                  = "tcp"
   description                  = "Permit endpoint to reach instance"
+}
+
+resource "aws_security_group" "tsukigumo_access_plug_sg" {
+  name = "tsukigumo-no-mitome-in"
+  description = "A Security Group with plug-and-play ingress and egress"
+  vpc_id = aws_vpc.moon_estate.id
 }
