@@ -149,6 +149,6 @@ resource "aws_iam_role_policy_attachment" "tsukigumo_ssm_attachment" {
 }
 
 resource "aws_iam_instance_profile" "tsukigumo_profile" {
-  name = "tsukigumo-no-shimei-profile"
+  name = "tsukigumo-no-karada"
   role = aws_iam_role.tsukigumo_identity.name
 }

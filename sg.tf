@@ -62,7 +62,7 @@ resource "aws_security_group" "tsukigumo_access" {
 
 resource "aws_vpc_security_group_ingress_rule" "tsukigumo_access_i_ssh" {
   security_group_id            = aws_security_group.tsukigumo_access.id
-  referenced_security_group_id = aws_security_group.tsukigumo_ssh_endpoint_sg
+  referenced_security_group_id = aws_security_group.tsukigumo_ssh_endpoint_sg.id
   from_port                    = 22
   to_port                      = 22
   ip_protocol                  = "tcp"
