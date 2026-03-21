@@ -143,6 +143,11 @@ resource "aws_iam_role_policy" "tsukigumo_vault_access" {
   })
 }
 
+resource "aws_iam_role_policy_attachment" "tsukigumo_ssm_attachment" {
+  role       = aws_iam_role.tsukiyou_identity.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 resource "aws_iam_instance_profile" "tsukigumo_profile" {
   name = "tsukigumo-no-shimei-profile"
   role = aws_iam_role.tsukigumo_identity.name
