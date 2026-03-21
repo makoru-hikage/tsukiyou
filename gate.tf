@@ -6,7 +6,10 @@ resource "aws_vpc_endpoint" "spirit_gate" {
 
   # Manifesting in the selected AZ only to save costs
   subnet_ids         = [local.moon_estate_subnets[var.spirit_gate_subnet]]
-  security_group_ids = [aws_security_group.tsukiyou_access.id]
+  security_group_ids = [
+    aws_security_group.tsukiyou_access.id,
+    aws_security_group.tsukigumo_access.id
+  ]
 
   private_dns_enabled = true
 }
