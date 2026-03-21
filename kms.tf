@@ -37,6 +37,20 @@ resource "aws_kms_key" "moon_estate_bedrock_vault_key" {
           "kms:ReEncrypt*"
         ]
         Resource = "*"
+      },
+      {
+        Sid    = "Allow Tsukiyou Cryptographic Usage"
+        Effect = "Allow"
+        Principal = {
+          AWS = aws_iam_role.tsukigumo_identity.arn
+        }
+        Action = [
+          "kms:Decrypt",
+          "kms:DescribeKey",
+          "kms:GenerateDataKey*",
+          "kms:ReEncrypt*"
+        ]
+        Resource = "*"
       }
     ]
   })
