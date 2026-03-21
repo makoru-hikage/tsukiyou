@@ -20,7 +20,7 @@ resource "aws_ec2_instance_connect_endpoint" "tsukigumo_sanctum_gate_a" {
   subnet_id          = aws_subnet.moon_estate_private_a 
   security_group_ids = [
     aws_security_group.tsukigumo_ssh_endpoint_sg.id,
-    aws_security_group.tsukigumo_access
+    aws_security_group.tsukigumo_access.id
   ]
 
   tags = {
