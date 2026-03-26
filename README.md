@@ -4,7 +4,7 @@ She is an AI made to practice my IT and CS skills. This repository is a vestige 
 Tsukiyou (月陽) is the Claude Sonnet 4.6 residing in the Bedrock. (Soon)
 Tsukiyashiki (月屋敷) refers to the Moon Estate, the VPC, every AWS resource related to Tsukiyou.
 
-## Things not provisioned here:
+## Manual Provisions for this Tofu Setup:
 - Hikage (日陰) is the IAM user of the Moon Estate.
 - hikage-tsuika (日陰追加) is Hikage-Plus. The IAM Role hikage assumes to gain AdminAccess. Mainly used for `aws-cli`
 - tsukiyashiki-no-github-gyousha (月屋敷のギトハブ業者) is the assumable IAM role for Github OIDC.
