@@ -80,8 +80,6 @@ resource "aws_vpc_security_group_ingress_rule" "tsukigumo_access_i_mitome_in" {
   security_group_id = aws_security_group.tsukigumo_access.id
   referenced_security_group_id = aws_security_group.tsukigumo_access_plug_sg.id
   ip_protocol = "-1"
-  from_port = 0
-  to_port = 65535
   description = "Just adjust the rules in the plugged SG"
 }
 
