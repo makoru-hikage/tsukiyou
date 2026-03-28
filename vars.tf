@@ -15,6 +15,7 @@ variable "github_oidc_role_arn" {
 
 variable "aws_account_id" {
   type = string
+  sensitive = true
 }
 
 variable "the_developer_email" {
