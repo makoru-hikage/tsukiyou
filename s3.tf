@@ -38,7 +38,8 @@ resource "aws_s3_bucket_policy" "moon_estate_bedrock_vault_policy" {
           ArnNotLike = {
             "aws:PrincipalArn" = [
               var.estate_maintainer_arn,
-              "${var.estate_maintainer_arn}/*"
+              "${var.estate_maintainer_arn}/*",
+              "arn:aws:iam::${var.aws_account_id}:root"
             ]
           }
         }
