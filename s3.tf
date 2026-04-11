@@ -24,7 +24,7 @@ resource "aws_s3_bucket_policy" "moon_estate_bedrock_vault_policy" {
     Statement = [
       {
         Sid       = "AccessFromMoonEstateOnly"
-        Effect    = "Deny"
+        Effect    = "Allow"
         Principal = "*"
         Action    = "s3:*"
         Resource = [
@@ -32,17 +32,48 @@ resource "aws_s3_bucket_policy" "moon_estate_bedrock_vault_policy" {
           "${aws_s3_bucket.moon_estate_bedrock_vault.arn}/*"
         ]
         Condition = {
-          StringNotEquals = {
+          StringEquals = {
             "aws:sourceVpce" = aws_vpc_endpoint.s3_vault_gate.id
           }
-          ArnNotLike = {
+          ArnLike = {
             "aws:PrincipalArn" = [
               var.estate_maintainer_arn,
-              "${var.estate_maintainer_arn}/*"
+              "${var.estate_maintainer_arn}/*",
+              "arn:aws:iam::${var.aws_account_id}:root"
             ]
           }
         }
-      }
+      },
+      {
+            Sid =  "TakonekoMaintenance"
+            Effect = "Allow"
+            Principal = "*"
+            Action = [
+                "s3:ListBucket",
+                "s3:ListBucketVersions",
+                "s3:GetAccelerateConfiguration",
+                "s3:GetBucketAcl",
+                "s3:GetAnalyticsConfiguration",
+                "s3:GetBucketLocation",
+                "s3:GetBucketLogging",
+                "s3:GetBucketOwnershipControls",
+                "s3:GetBucketPolicy",
+                "s3:GetBucketPublicAccessBlock",
+                "s3:GetBucketTagging",
+                "s3:GetBucketVersioning",
+                "s3:PutBucketTagging"
+            ],
+            Resource = aws_s3_bucket.moon_estate_bedrock_vault.arn
+            Condition = {
+              ArnLike = {
+                "aws:PrincipalArn" = [
+                  var.github_oidc_role_arn,
+                  "${var.github_oidc_role_arn}/*",
+                ]
+              }
+            }
+
+        }
     ]
   })
 }

@@ -8,6 +8,12 @@ variable "estate_maintainer_arn" {
   description = "The caretaker of the estate"
 }
 
+variable "github_oidc_role_arn" {
+  type = string
+  description = "The official Github contractor"
+  sensitive = true
+}
+
 variable "aws_account_id" {
   type = string
   sensitive = true
