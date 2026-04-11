@@ -43,7 +43,28 @@ resource "aws_s3_bucket_policy" "moon_estate_bedrock_vault_policy" {
             ]
           }
         }
-      }
+      },
+      {
+            Sid =  "TakonekoMaintenance"
+            Effect = "Allow"
+            Principal = "*"
+            Action = [
+                "s3:ListBucket",
+                "s3:ListBucketVersions",
+                "s3:GetAccelerateConfiguration",
+                "s3:GetBucketAcl",
+                "s3:GetAnalyticsConfiguration",
+                "s3:GetBucketLocation",
+                "s3:GetBucketLogging",
+                "s3:GetBucketOwnershipControls",
+                "s3:GetBucketPolicy",
+                "s3:GetBucketPublicAccessBlock",
+                "s3:GetBucketTagging",
+                "s3:GetBucketVersioning",
+                "s3:PutBucketTagging"
+            ],
+            Resource = aws_s3_bucket.moon_estate_bedrock_vault.arn
+        }
     ]
   })
 }
