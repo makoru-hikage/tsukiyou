@@ -12,6 +12,9 @@ resource "aws_vpc_endpoint" "spirit_gate" {
   ]
 
   private_dns_enabled = true
+  tags = {
+    Name = "seireimon"
+  }
 }
 
 resource "aws_ec2_instance_connect_endpoint" "tsukigumo_sanctum_gate_a" {
