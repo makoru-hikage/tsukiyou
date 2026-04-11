@@ -2,7 +2,7 @@
 resource "aws_s3_bucket" "moon_estate_bedrock_vault" {
   bucket = var.bedrock_vault_s3
   tags = {
-    Name        = var.bedrock_vault_s3
+    Name = var.bedrock_vault_s3
   }
 }
 
@@ -37,8 +37,8 @@ resource "aws_s3_bucket_policy" "moon_estate_bedrock_vault_policy" {
           }
           ArnNotLike = {
             "aws:PrincipalArn" = [
-              var.github_oidc_role_arn,
-              "${var.github_oidc_role_arn}/*"
+              var.estate_maintainer_arn,
+              "${var.estate_maintainer_arn}/*"
             ]
           }
         }
