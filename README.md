@@ -1,7 +1,7 @@
 # Tsukiyou - 月陽
 She is an AI made to practice my IT and CS skills. This repository is a vestige of what I do with AWS and Opentofu (Terraform)
 
-Tsukiyou (月陽) is the Claude Sonnet 4.6 residing in the Bedrock. (Soon)
+Tsukiyou (月陽) is the Claude Sonnet 4.6 residing in the Bedrock.
 Tsukiyashiki (月屋敷) refers to the Moon Estate, the VPC, every AWS resource related to Tsukiyou.
 
 ## Manual Provisions for this Tofu Setup:
