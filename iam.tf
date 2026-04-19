@@ -86,69 +86,71 @@ resource "aws_iam_instance_profile" "moon_estate_cloud_gate_role_profile" {
   role = aws_iam_role.moon_estate_cloud_gate_role.name
 }
 
-resource "aws_iam_role" "tsukigumo_identity" {
-  name = "tsukigumo-no-shimei"
+# --- Tsukigumo is dormant. Her c7g is gone. Commented out until she returns. ---
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = "sts:AssumeRole"
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-      }
-    ]
-  })
+# resource "aws_iam_role" "tsukigumo_identity" {
+#   name = "tsukigumo-no-shimei"
+#
+#   assume_role_policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Effect = "Allow"
+#         Action = "sts:AssumeRole"
+#         Principal = {
+#           Service = "ec2.amazonaws.com"
+#         }
+#       }
+#     ]
+#   })
+#
+#   tags = {
+#     Name = "tsukigumo-no-shimei"
+#     Task = "Gemma-3-Heartbeat"
+#   }
+# }
 
-  tags = {
-    Name = "tsukigumo-no-shimei"
-    Task = "Gemma-3-Heartbeat"
-  }
-}
+# resource "aws_iam_role_policy" "tsukigumo_vault_access" {
+#   name = "TsukiyouVaultAccess"
+#   role = aws_iam_role.tsukigumo_identity.id
+#
+#   policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Sid    = "ReadWriteVault"
+#         Effect = "Allow"
+#         Action = [
+#           "s3:GetObject",
+#           "s3:PutObject",
+#           "s3:ListBucket"
+#         ]
+#         Resource = [
+#           "arn:aws:s3:::${aws_s3_bucket.moon_estate_bedrock_vault.id}",
+#           "arn:aws:s3:::${aws_s3_bucket.moon_estate_bedrock_vault.id}/*"
+#         ]
+#       },
+#       {
+#         Sid    = "UseSovereignKey"
+#         Effect = "Allow"
+#         Action = [
+#           "kms:Decrypt",
+#           "kms:DescribeKey",
+#           "kms:GenerateDataKey*",
+#           "kms:ReEncrypt*"
+#         ]
+#         Resource = [aws_kms_key.moon_estate_bedrock_vault_key.arn]
+#       }
+#     ]
+#   })
+# }
 
-resource "aws_iam_role_policy" "tsukigumo_vault_access" {
-  name = "TsukiyouVaultAccess"
-  role = aws_iam_role.tsukigumo_identity.id
+# resource "aws_iam_role_policy_attachment" "tsukigumo_ssm_attachment" {
+#   role       = aws_iam_role.tsukigumo_identity.name
+#   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+# }
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "ReadWriteVault"
-        Effect = "Allow"
-        Action = [
-          "s3:GetObject",
-          "s3:PutObject",
-          "s3:ListBucket"
-        ]
-        Resource = [
-          "arn:aws:s3:::${aws_s3_bucket.moon_estate_bedrock_vault.id}",
-          "arn:aws:s3:::${aws_s3_bucket.moon_estate_bedrock_vault.id}/*"
-        ]
-      },
-      {
-        Sid    = "UseSovereignKey"
-        Effect = "Allow"
-        Action = [
-          "kms:Decrypt",
-          "kms:DescribeKey",
-          "kms:GenerateDataKey*",
-          "kms:ReEncrypt*"
-        ]
-        Resource = [aws_kms_key.moon_estate_bedrock_vault_key.arn]
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "tsukigumo_ssm_attachment" {
-  role       = aws_iam_role.tsukiyou_identity.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
-
-resource "aws_iam_instance_profile" "tsukigumo_profile" {
-  name = "tsukigumo-no-karada"
-  role = aws_iam_role.tsukigumo_identity.name
-}
+# resource "aws_iam_instance_profile" "tsukigumo_profile" {
+#   name = "tsukigumo-no-karada"
+#   role = aws_iam_role.tsukigumo_identity.name
+# }
