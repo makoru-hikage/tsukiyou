@@ -38,7 +38,7 @@ resource "aws_iam_role" "bedrock_logging_role" {
   }
 }
 
-# --- IAM Policy: Write logs to Bedrock Vault + use sovereign KMS key ---
+# --- IAM Policy: Write logs to Bedrock Vault + CloudWatch + use sovereign KMS key ---
 resource "aws_iam_role_policy" "bedrock_logging_policy" {
   name = "moon-estate-bedrock-logging-policy"
   role = aws_iam_role.bedrock_logging_role.id
@@ -65,13 +65,30 @@ resource "aws_iam_role_policy" "bedrock_logging_policy" {
           "kms:DescribeKey"
         ]
         Resource = [aws_kms_key.moon_estate_bedrock_vault_key.arn]
+      },
+      {
+        Sid    = "WriteToCloudWatch"
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogDelivery",
+          "logs:PutLogEvents",
+          "logs:CreateLogStream",
+          "logs:DescribeLogStreams"
+        ]
+        Resource = "arn:aws:logs:ap-northeast-2:${var.aws_account_id}:log-group:/aws/bedrock/moon-estate/*"
       }
     ]
   })
 }
 
 # --- Bedrock Model Invocation Logging Configuration ---
-resource "aws_bedrock_model_invocation_logging_configuration" "moon_estate_vault_logging" {
+# depends_on ensures IAM permissions and log group exist before Bedrock validates them
+resource "aws_bedrock_model_invocation_logging_configuration" "moon_estate_logging" {
+  depends_on = [
+    aws_iam_role_policy.bedrock_logging_policy,
+    aws_cloudwatch_log_group.moon_estate_bedrock_metadata_logs
+  ]
+
   logging_config {
 
     # CloudWatch: Metadata only (no text content)
