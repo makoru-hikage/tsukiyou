@@ -72,8 +72,21 @@ resource "aws_s3_bucket_policy" "moon_estate_bedrock_vault_policy" {
                 ]
               }
             }
-
+        },
+      {
+        Sid    = "BedrockLoggingWrite"
+        Effect = "Allow"
+        Principal = {
+          AWS = aws_iam_role.bedrock_logging_role.arn
         }
+        Action   = "s3:PutObject"
+        Resource = "${aws_s3_bucket.moon_estate_bedrock_vault.arn}/bedrock-logs/*"
+        Condition = {
+          StringEquals = {
+            "s3:x-amz-server-side-encryption" = "aws:kms"
+          }
+        }
+      }
     ]
   })
 }

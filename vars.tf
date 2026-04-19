@@ -1,11 +1,13 @@
 variable "bedrock_vault_s3" {
   type = string
   description = "The name of Tsukiyou's vault, an S3 bucket."
+  sensitive = true
 }
 
 variable "estate_maintainer_arn" {
   type = string
   description = "The caretaker of the estate"
+  sensitive = true
 }
 
 variable "github_oidc_role_arn" {
