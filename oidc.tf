@@ -56,6 +56,7 @@ resource "aws_iam_role_policy" "nidzukuri_github_actions_packer" {
           "ec2:CreateTags",
           "ec2:DeleteTags",
           "ec2:ModifyInstanceAttribute",
+          "ec2:ModifyImageAttribute",
           "ec2:GetPasswordData",
           "ec2:CreateSecurityGroup",
           "ec2:DeleteSecurityGroup",
