@@ -1,5 +1,5 @@
 resource "aws_iam_role" "nidzukuri_github_actions" {
-  name = "nidzukuri-github-actions"
+  name = "moon-estate-packer"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
