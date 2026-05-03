@@ -1,21 +1,3 @@
-resource "aws_iam_openid_connect_provider" "github_actions" {
-  url             = "https://token.actions.githubusercontent.com"
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [
-    "2b18947a6a9fc7764fd8b5fb18a863b0c6dac24f",
-    "1c5877685003504186522c070c0c2e366052865c",
-  ]
-
-  tags = {
-    Name = "github-actions-oidc"
-  }
-}
-
-import {
-  to = aws_iam_openid_connect_provider.github_actions
-  id = "arn:aws:iam::${var.aws_account_id}:oidc-provider/token.actions.githubusercontent.com"
-}
-
 resource "aws_iam_role" "nidzukuri_github_actions" {
   name = "nidzukuri-github-actions"
 
@@ -26,7 +8,7 @@ resource "aws_iam_role" "nidzukuri_github_actions" {
         Effect = "Allow"
         Action = "sts:AssumeRoleWithWebIdentity"
         Principal = {
-          Federated = aws_iam_openid_connect_provider.github_actions.arn
+          Federated = "arn:aws:iam::${var.aws_account_id}:oidc-provider/token.actions.githubusercontent.com"
         }
         Condition = {
           StringEquals = {
