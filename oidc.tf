@@ -15,7 +15,11 @@ resource "aws_iam_role" "nidzukuri_github_actions" {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:makoru-hikage/nidzukuri-arm64:*"
+            "token.actions.githubusercontent.com:sub" = [
+              "repo:makoru-hikage/nidzukuri-arm64:*",
+              "repo:makoru-hikage/nidzukuri-arm64-go:*",
+              "repo:makoru-hikage/nidzukuri-arm64-go-kansokujo:*"
+            ]
           }
         }
       }
