@@ -81,6 +81,18 @@ resource "aws_iam_role_policy" "nidzukuri_github_actions_packer" {
             "iam:PassedToService" = "ec2.amazonaws.com"
           }
         }
+      },
+      {
+        Sid    = "PackerIAMInstanceProfile"
+        Effect = "Allow"
+        Action = [
+          "iam:GetInstanceProfile",
+          "iam:AddRoleToInstanceProfile",
+          "iam:RemoveRoleFromInstanceProfile",
+          "iam:CreateInstanceProfile",
+          "iam:DeleteInstanceProfile"
+        ]
+        Resource = "*"
       }
     ]
   })
