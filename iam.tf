@@ -86,6 +86,51 @@ resource "aws_iam_instance_profile" "moon_estate_cloud_gate_role_profile" {
   role = aws_iam_role.moon_estate_cloud_gate_role.name
 }
 
+resource "aws_iam_role" "moon_estate_packer_attached" {
+  name = "moon-estate-packer-attached"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = "sts:AssumeRole"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "moon_estate_packer_attached_cloudwatch" {
+  name = "cloudwatch_policy"
+  role = aws_iam_role.moon_estate_packer_attached.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "CloudWatchReadAccess"
+        Effect = "Allow"
+        Action = [
+          "cloudwatch:GetMetricData",
+          "cloudwatch:GetMetricStatistics",
+          "cloudwatch:ListMetrics",
+          "cloudwatch:DescribeAlarmsForMetric",
+          "tag:GetResources"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "moon_estate_packer_attached" {
+  name = "moon-estate-packer-attached"
+  role = aws_iam_role.moon_estate_packer_attached.name
+}
+
 # --- Tsukigumo is dormant. Her c7g is gone. Commented out until she returns. ---
 
 # resource "aws_iam_role" "tsukigumo_identity" {
