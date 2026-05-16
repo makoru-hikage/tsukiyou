@@ -174,7 +174,7 @@ resource "aws_iam_role_policy" "moon_estate_observatory_policy" {
           "storagegateway:ListTagsForResource",
           "iam:ListAccountAliases"
         ],
-        Resources = ["*"]
+        Resource = ["*"]
       }
     ]
   })
