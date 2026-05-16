@@ -172,7 +172,13 @@ resource "aws_iam_role_policy" "moon_estate_observatory_policy" {
           "shield:ListProtections",
           "storagegateway:ListGateways",
           "storagegateway:ListTagsForResource",
-          "iam:ListAccountAliases"
+          "iam:ListAccountAliases",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:GetLogEvents",
+          "logs:StartQuery",
+          "logs:StopQuery",
+          "logs:GetQueryResults"
         ],
         Resource = ["*"]
       }
