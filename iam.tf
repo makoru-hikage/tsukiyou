@@ -131,6 +131,60 @@ resource "aws_iam_instance_profile" "moon_estate_packer_attached" {
   role = aws_iam_role.moon_estate_packer_attached.name
 }
 
+resource "aws_iam_role" "moon_estate_observatory" {
+  name = "moon-estate-observatory"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = "sts:AssumeRole"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "moon_estate_observatory_policy" {
+  name = "cloudwatch_policy"
+  role = aws_iam_role.moon_estate_observatory.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "tag:GetResources",
+          "cloudwatch:GetMetricData",
+          "cloudwatch:GetMetricStatistics",
+          "cloudwatch:ListMetrics",
+          "apigateway:GET",
+          "aps:ListWorkspaces",
+          "autoscaling:DescribeAutoScalingGroups",
+          "dms:DescribeReplicationInstances",
+          "dms:DescribeReplicationTasks",
+          "ec2:DescribeTransitGatewayAttachments",
+          "ec2:DescribeSpotFleetRequests",
+          "shield:ListProtections",
+          "storagegateway:ListGateways",
+          "storagegateway:ListTagsForResource",
+          "iam:ListAccountAliases"
+        ],
+        Resources = ["*"]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "moon_estate_observatory_instance_profile" {
+  name = "moon-estate-observatory-profile"
+  role = aws_iam_role.moon_estate_observatory.name
+}
+
 # --- Tsukigumo is dormant. Her c7g is gone. Commented out until she returns. ---
 
 # resource "aws_iam_role" "tsukigumo_identity" {
