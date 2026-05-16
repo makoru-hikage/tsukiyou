@@ -57,7 +57,7 @@ resource "aws_instance" "moon_estate_observatory" {
   ami           = "ami-0d7281a43fae8c8b1"
   instance_type = "t4g.micro"
   subnet_id     = aws_subnet.moon_estate_public_a.id
-  iam_instance_profile = aws_iam_instance_profile.moon_estate_observatory_instance_profile
+  iam_instance_profile = aws_iam_instance_profile.moon_estate_observatory_instance_profile.name
   
   vpc_security_group_ids = [aws_security_group.moon_estate_cloud_gate_sg.id]
 
@@ -71,7 +71,7 @@ resource "aws_instance" "moon_estate_observatory" {
 
   capacity_reservation_specification {
     capacity_reservation_target {
-      capacity_reservation_id = aws_ec2_capacity_reservation.nat_anchor.id
+      capacity_reservation_id = aws_ec2_capacity_reservation.moon_estate_observatory_anchor.id
     }
   }
 
