@@ -180,6 +180,11 @@ resource "aws_iam_role_policy" "moon_estate_observatory_policy" {
   })
 }
 
+resource "aws_iam_role_policy_attachment" "moon_estate_observatory_ssm" {
+  role       = aws_iam_role.moon_estate_observatory.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 resource "aws_iam_instance_profile" "moon_estate_observatory_instance_profile" {
   name = "moon-estate-observatory-profile"
   role = aws_iam_role.moon_estate_observatory.name
