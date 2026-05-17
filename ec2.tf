@@ -54,7 +54,7 @@ resource "aws_ec2_capacity_reservation" "nat_anchor" {
 }
 
 resource "aws_instance" "moon_estate_observatory" {
-  ami           = "ami-0d7281a43fae8c8b1"
+  ami           = "ami-09a5fca4248a02078"
   instance_type = "t4g.micro"
   subnet_id     = aws_subnet.moon_estate_public_a.id
   iam_instance_profile = aws_iam_instance_profile.moon_estate_observatory_instance_profile.name
