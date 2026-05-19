@@ -2,6 +2,7 @@ resource "aws_vpc_endpoint" "spirit_gate" {
   count             = tobool(var.spirit_gate_open) ? 1 : 0
   vpc_id            = aws_vpc.moon_estate.id
   service_name      = "com.amazonaws.ap-northeast-1.bedrock-runtime"
+  service_region    = "ap-northeast-1"
   vpc_endpoint_type = "Interface"
 
   # Manifesting in the selected AZ only to save costs
