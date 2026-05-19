@@ -25,7 +25,10 @@ resource "aws_iam_role" "bedrock_logging_role" {
             "aws:SourceAccount" = var.aws_account_id
           }
           ArnLike = {
-            "aws:SourceArn" = "arn:aws:bedrock:ap-northeast-2:${var.aws_account_id}:*"
+            "aws:SourceArn" = [
+              "arn:aws:bedrock:ap-northeast-2:${var.aws_account_id}:*",
+              "arn:aws:bedrock:*:${var.aws_account_id}:inference-profile/*"
+            ]
           }
         }
       }
