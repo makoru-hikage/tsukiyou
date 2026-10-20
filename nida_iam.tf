@@ -14,7 +14,7 @@ resource "aws_iam_role" "nida_no_takoneko" {
           "sts:TagSession"
         ]
         Condition = {
-          StringEqual = {
+          StringEquals = {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
           StringLike = { 
