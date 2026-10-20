@@ -188,6 +188,19 @@ resource "aws_iam_role_policy" "nida_devops_policy" {
           "secretsmanager:GetResourcePolicy"
         ]
         Resource = ["arn:aws:secretsmanager:ap-northeast-2:${var.aws_account_id}:secret:nida/*"]
+      },
+      {
+        Sid    = "NidaSecretsManagerWrite"
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:CreateSecret",
+          "secretsmanager:PutSecretValue",
+          "secretsmanager:UpdateSecret",
+          "secretsmanager:DeleteSecret",
+          "secretsmanager:TagResource",
+          "secretsmanager:UntagResource"
+        ]
+        Resource = ["arn:aws:secretsmanager:ap-northeast-2:${var.aws_account_id}:secret:nida/*"]
       }
     ]
   })
