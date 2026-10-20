@@ -184,7 +184,8 @@ resource "aws_iam_role_policy" "nida_devops_policy" {
         Action = [
           "secretsmanager:DescribeSecret",
           "secretsmanager:GetSecretValue",
-          "secretsmanager:ListSecretVersionIds"
+          "secretsmanager:ListSecretVersionIds",
+          "secretsmanager:GetResourcePolicy"
         ]
         Resource = ["arn:aws:secretsmanager:ap-northeast-2:${var.aws_account_id}:secret:nida/*"]
       }
