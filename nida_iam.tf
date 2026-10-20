@@ -10,7 +10,7 @@ resource "aws_iam_role" "nida_no_takoneko" {
         }
         Effect = "Allow"
         Action = [
-          "sts:AssumeRole",
+          "sts:AssumeRoleWithWebIdentity",
           "sts:TagSession"
         ]
         Condition = {
