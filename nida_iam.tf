@@ -14,8 +14,10 @@ resource "aws_iam_role" "nida_no_takoneko" {
           "sts:TagSession"
         ]
         Condition = {
+          StringEqual = {
+            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+          }
           StringLike = { 
-            "token.actions.githubusercontent.com:aud" = ["sts.amazonaws.com"]
             "token.actions.githubusercontent.com:sub" = "repo:luna-obscura/nida-tf:*"
           }
         }
