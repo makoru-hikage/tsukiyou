@@ -139,7 +139,8 @@ resource "aws_iam_role_policy" "nida_devops_policy" {
           "acm:*",
           "route53:*",
           "logs:*",
-          "cloudwatch:*"
+          "cloudwatch:*",
+          "cloudfront:*"
         ]
 
         Resource = ["*"]
