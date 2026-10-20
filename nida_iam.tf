@@ -18,7 +18,7 @@ resource "aws_iam_role" "nida_no_takoneko" {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
           StringLike = { 
-            "token.actions.githubusercontent.com:sub" = "repo:luna-obscura/nida-tf:*"
+            "token.actions.githubusercontent.com:sub" = "repo:luna-obscura@*/nida-tf@*:*"
           }
         }
       }
