@@ -177,6 +177,16 @@ resource "aws_iam_role_policy" "nida_devops_policy" {
         ]
 
         Resource = ["*"]
+      },
+      {
+        Sid    = "NidaSecretsManagerRead"
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:ListSecretVersionIds"
+        ]
+        Resource = ["arn:aws:secretsmanager:ap-northeast-2:${var.aws_account_id}:secret:nida/*"]
       }
     ]
   })
