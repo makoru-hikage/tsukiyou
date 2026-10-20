@@ -5,10 +5,19 @@ resource "aws_iam_role" "nida_no_takoneko" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
-        Action = "sts:AssumeRole"
         Principal = {
-          Service = "ec2.amazonaws.com"
+          Federated = "arn:aws:iam::${var.aws_account_id}:oidc-provider/token.actions.githubusercontent.com"
+        }
+        Effect = "Allow"
+        Action = [
+          "sts:AssumeRole",
+          "sts:TagSession"
+        ]
+        Condition = {
+          StringLike = { 
+            "token.actions.githubusercontent.com:aud" = ["sts.amazonaws.com"]
+            "token.actions.githubusercontent.com:sub" = "repo:luna-obscura/nida-tf:*"
+          }
         }
       }
     ]
