@@ -157,7 +157,7 @@ resource "aws_iam_role_policy" "nida_devops_policy" {
         Resource = ["*"]
       },
       {
-        Sid    = "NidaOrchestrationPolicies"
+        Sid    = "NidaLBPolicies"
         Effect = "Allow"
         Action = [
           "elasticloadbalancing:*",
