@@ -192,6 +192,15 @@ resource "aws_iam_role_policy" "nida_devops_policy" {
         Resource = ["*"]
       },
       {
+        Sid    = "NidaServiceLinkedRoles"
+        Effect = "Allow"
+        Action = ["iam:CreateServiceLinkedRole"]
+        Resource = [
+          "arn:aws:iam::*:role/aws-service-role/rds.amazonaws.com/*",
+          "arn:aws:iam::*:role/aws-service-role/ecs.amazonaws.com/*"
+        ]
+      },
+      {
         Sid    = "NidaSecretsManagerRead"
         Effect = "Allow"
         Action = [
