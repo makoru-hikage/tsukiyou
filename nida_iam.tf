@@ -17,7 +17,7 @@ resource "aws_iam_role" "nida_no_takoneko" {
           StringEquals = {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
-          StringLike = { 
+          StringLike = {
             "token.actions.githubusercontent.com:sub" = "repo:luna-obscura@*/nida-tf@*:*"
           }
         }
@@ -150,6 +150,7 @@ resource "aws_iam_role_policy" "nida_devops_policy" {
         Effect = "Allow"
         Action = [
           "ecs:*",
+          "servicediscovery:*",
           "ecr:GetAuthorizationToken",
           "ecr:BatchCheckLayerAvailability",
           "ecr:GetDownloadUrlForLayer",
