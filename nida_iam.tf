@@ -199,7 +199,8 @@ resource "aws_iam_role_policy" "nida_devops_policy" {
         Resource = [
           "arn:aws:iam::*:role/aws-service-role/rds.amazonaws.com/*",
           "arn:aws:iam::*:role/aws-service-role/ecs.amazonaws.com/*",
-          "arn:aws:iam::*:role/aws-service-role/servicediscovery.amazonaws.com/*"
+          "arn:aws:iam::*:role/aws-service-role/servicediscovery.amazonaws.com/*",
+          "arn:aws:iam::*:role/aws-service-role/elasticloadbalancing.amazonaws.com/*"
         ]
       },
       {
