@@ -212,6 +212,7 @@ resource "aws_iam_role_policy" "nida_devops_policy" {
           "lambda:ListTags",
           "lambda:TagResource",
           "lambda:UntagResource",
+          "lambda:GetFunctionCodeSigningConfig",
         ]
         Resource = ["arn:aws:lambda:ap-northeast-2:${var.aws_account_id}:function:nida-*"]
       },
