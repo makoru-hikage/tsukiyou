@@ -194,6 +194,28 @@ resource "aws_iam_role_policy" "nida_devops_policy" {
         Resource = ["*"]
       },
       {
+        Sid    = "NidaLambdaPolicies"
+        Effect = "Allow"
+        Action = [
+          "lambda:CreateFunction",
+          "lambda:DeleteFunction",
+          "lambda:GetFunction",
+          "lambda:GetFunctionConfiguration",
+          "lambda:UpdateFunctionCode",
+          "lambda:UpdateFunctionConfiguration",
+          "lambda:InvokeFunction",
+          "lambda:ListVersionsByFunction",
+          "lambda:PublishVersion",
+          "lambda:AddPermission",
+          "lambda:RemovePermission",
+          "lambda:GetPolicy",
+          "lambda:ListTags",
+          "lambda:TagResource",
+          "lambda:UntagResource",
+        ]
+        Resource = ["arn:aws:lambda:ap-northeast-2:${var.aws_account_id}:function:nida-*"]
+      },
+      {
         Sid    = "NidaServiceLinkedRoles"
         Effect = "Allow"
         Action = ["iam:CreateServiceLinkedRole"]
