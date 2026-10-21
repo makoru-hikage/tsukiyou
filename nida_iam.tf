@@ -122,7 +122,8 @@ resource "aws_iam_role_policy" "nida_devops_policy" {
           "ec2:AllocateAddress",
           "ec2:ReleaseAddress",
           "ec2:AssociateAddress",
-          "ec2:DisassociateAddress"
+          "ec2:DisassociateAddress",
+          "ec2:Get*"
         ]
 
         Resource = ["*"]
