@@ -123,6 +123,11 @@ resource "aws_iam_role_policy" "nida_devops_policy" {
           "ec2:ReleaseAddress",
           "ec2:AssociateAddress",
           "ec2:DisassociateAddress",
+          "ec2:CreateNatGateway",
+          "ec2:DescribeNatGateways",
+          "ec2:DescribeNatGatewayAttributes",
+          "ec2:ModifyNatGatewayAttributes",
+          "ec2:DeleteNatGateway",
           "ec2:Get*"
         ]
 
