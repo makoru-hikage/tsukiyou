@@ -64,13 +64,20 @@ resource "aws_iam_role_policy" "nida_iam_policy" {
           "iam:DeleteRolePolicy",
           "iam:ListRolePolicies",
           "iam:UpdateAssumeRolePolicy",
-          "iam:TagRole"
+          "iam:TagRole",
+          "iam:SimulatePrincipalPolicy"
         ]
 
         Resource = [
           "arn:aws:iam::${var.aws_account_id}:role/nida-*",
           "arn:aws:iam::${var.aws_account_id}:instance-profile/nida-*",
         ]
+      },
+      {
+        Sid      = "NidaAccessAnalyzerValidatePolicy"
+        Effect   = "Allow"
+        Action   = ["access-analyzer:ValidatePolicy"]
+        Resource = ["*"]
       }
     ]
   })
